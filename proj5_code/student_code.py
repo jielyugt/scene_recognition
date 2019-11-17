@@ -132,6 +132,17 @@ def nearest_neighbor_classify(train_image_feats, train_labels,
     # TODO: YOUR CODE HERE                                                      #
     #############################################################################
 
+    N, d = train_image_feats.shape
+    M = test_image_feats.shape[0]
+    distances = pairwise_distances(test_image_feats, train_image_feats)
+    args_list = np.argsort(distances)[:,:k].reshape(M, k)
+    labels_list = np.asarray(train_labels)[args_list]
+
+    for labels_each in labels_list:
+        unique, counts = np.unique(labels_each,return_counts=True)
+        best = np.argmax(counts)
+        test_labels.append(unique[best])
+
     #############################################################################
     #                             END OF YOUR CODE                              #
     #############################################################################
