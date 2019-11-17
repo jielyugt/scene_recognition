@@ -85,7 +85,10 @@ def get_tiny_images(image_arrays):
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    raise NotImplementedError('get_tiny_images function not implemented.')
+    size = 16
+    feats = np.zeros((len(image_arrays), size**2))
+    for i,img in enumerate(image_arrays):
+        feats[i] = cv2.resize(img, (size,size)).flatten()
 
     ###########################################################################
     #                             END OF YOUR CODE                            #
