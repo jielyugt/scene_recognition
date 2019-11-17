@@ -39,7 +39,9 @@ def pairwise_distances(X, Y):
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    raise NotImplementedError('pairwise_distances function not implemented.')
+    tiled_1 = np.tile(X, M).reshape(N, M, d_x)
+    tiled_2 = np.tile(Y.flatten(), N).reshape(N, M, d_x)
+    D = np.sqrt(np.sum(np.power((tiled_1 - tiled_2),2), axis = 2))
 
     ###########################################################################
     #                             END OF YOUR CODE                            #
