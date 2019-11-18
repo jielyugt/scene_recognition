@@ -401,8 +401,9 @@ def get_bags_of_sifts(image_arrays, vocabulary, step_size = 10):
         features = get_siftnet_features(img_tensor, x.flatten(), y.flatten())
         indices = kmeans_quantize(features, vocab)
         u, counts = np.unique(indices, return_counts = True)
+
         for i in range(u.shape[0]):
-            feats[index, u[i]] = counts
+            feats[index, u[i]] = counts[i]
         feats[index] = feats[index] / np.sum(feats[index])
 
     ###########################################################################
