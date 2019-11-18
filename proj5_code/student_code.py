@@ -388,7 +388,21 @@ def get_bags_of_sifts(image_arrays, vocabulary, step_size = 10):
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    raise NotImplementedError('get_bags_of_sifts function not implemented.')
+    for index, img in enumerate(image_arrays):
+        img_array = np.array(img, dtype='float32')
+        img_tensor = torch.from_numpy(img_array)
+        img_tensor = img_tensor.reshape((1, 1, img_array.shape[0], img_array.shape[1]))
+
+        x_axis = np.arange(10, img_tensor.shape[3] - 10, step_size)
+        y_axis = np.arange(10, img_tensor.shape[2] - 10, step_size)
+        x, y = np.meshgrid(x_axis, y_axis)
+
+        features = get_siftnet_features(img_tensor, x.flatten(), y.flatten())
+        indices = kmeans_quantize(features, vocab)
+        u, counts = np.unique(indices, return_counts = True)
+        for i in range(u.shape[0]):
+            feats[index, u[i]] = counts
+        feats[index] = feats[index] / np.sum(feats[index])
 
     ###########################################################################
     #                             END OF YOUR CODE                            #
