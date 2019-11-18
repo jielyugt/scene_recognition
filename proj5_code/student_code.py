@@ -39,9 +39,17 @@ def pairwise_distances(X, Y):
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    tiled_1 = np.tile(X, M).reshape(N, M, d_x)
-    tiled_2 = np.tile(Y.flatten(), N).reshape(N, M, d_x)
-    D = np.sqrt(np.sum(np.power((tiled_1 - tiled_2),2), axis = 2))
+    # # vectorized approach, takes too much memory
+    # tiled_1 = np.tile(X, M).reshape(N, M, d_x)
+    # tiled_2 = np.tile(Y.flatten(), N).reshape(N, M, d_x)
+    # D = np.sqrt(np.sum(np.power((tiled_1 - tiled_2),2), axis = 2))
+
+    # iterative approach
+    D = np.zeros((N,M))
+
+    for i in range(N):
+      for j in range(M):
+        D[i][j] = np.linalg.norm(X[i] - Y[j])
 
     ###########################################################################
     #                             END OF YOUR CODE                            #
@@ -84,7 +92,6 @@ def get_tiny_images(image_arrays):
     ###########################################################################
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
-
     size = 16
     feats = np.zeros((len(image_arrays), size**2))
     for i,img in enumerate(image_arrays):
