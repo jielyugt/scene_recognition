@@ -276,7 +276,23 @@ def build_vocabulary(image_arrays, vocab_size, stride = 20):
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    raise NotImplementedError('build_vocabulary function not implemented.')
+    feature_vectors = []
+
+    for img in image_arrays:
+        img_array = np.array(img, dtype='float32')
+        img_tensor = torch.from_numpy(img_array)
+        img_tensor = img_tensor.reshape((1, 1, img_array.shape[0], img_array.shape[1]))
+
+        x_axis = np.arange(10, img_tensor.shape[3] - 10, stride)
+        y_axis = np.arange(10, img_tensor.shape[2] - 10, stride)
+        x, y = np.meshgrid(x_axis, y_axis)
+
+        features = get_siftnet_features(img_tensor, x.flatten(), y.flatten())
+        feature_vectors.append(features)
+    
+    feature_vectors = np.asarray(feature_vectors)
+    feature_vectors = feature_vectors.reshape(feature_vectors.shape[0] * feature_vectors.shape[1], feature_vectors.shape[2])
+    vocab = kmeans(feature_vectors, vocab_size)
 
     ###########################################################################
     #                             END OF YOUR CODE                            #
