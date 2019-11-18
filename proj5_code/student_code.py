@@ -276,7 +276,7 @@ def build_vocabulary(image_arrays, vocab_size, stride = 20):
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    feature_vectors = []
+    feature_vectors = np.empty((0, dim))
 
     for img in image_arrays:
         img_array = np.array(img, dtype='float32')
@@ -288,9 +288,8 @@ def build_vocabulary(image_arrays, vocab_size, stride = 20):
         x, y = np.meshgrid(x_axis, y_axis)
 
         features = get_siftnet_features(img_tensor, x.flatten(), y.flatten())
-        feature_vectors.append(features)
-    
-    feature_vectors = np.asarray(feature_vectors)
+        feature_vectors = np.append(feature_vectors, features, axis = 0)
+
     feature_vectors = feature_vectors.reshape(feature_vectors.shape[0] * feature_vectors.shape[1], feature_vectors.shape[2])
     vocab = kmeans(feature_vectors, vocab_size)
 
