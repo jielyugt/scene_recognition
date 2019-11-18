@@ -290,7 +290,6 @@ def build_vocabulary(image_arrays, vocab_size, stride = 20):
         features = get_siftnet_features(img_tensor, x.flatten(), y.flatten())
         feature_vectors = np.append(feature_vectors, features, axis = 0)
 
-    feature_vectors = feature_vectors.reshape(feature_vectors.shape[0] * feature_vectors.shape[1], feature_vectors.shape[2])
     vocab = kmeans(feature_vectors, vocab_size)
 
     ###########################################################################
