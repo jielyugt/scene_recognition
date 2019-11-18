@@ -200,24 +200,18 @@ def kmeans(feature_vectors, k, max_iter = 100):
     centroids = unique_points[random_indeices]
 
     for _ in range(max_iter):
+
+        # for jupyter notebook
+        # print("kmeans iteration {} started".format(_))
         distances = pairwise_distances(feature_vectors, centroids)
         args_list = np.argsort(distances)[:,0]  # shape = (N,)
-        # print(np.unique(feature_vectors, axis = 0))
-
         new_centroids = np.zeros((k, d))
         for i in range(k):
             cluster = np.where(args_list == i)
-            # print(cluster)
-            # print(feature_vectors[cluster])
             cluster_mean = np.mean(feature_vectors[cluster], axis = 0)
             new_centroids[i] = cluster_mean
 
-        # print(centroids)
-        # print(new_centroids)
-
         if np.allclose(new_centroids, centroids):
-            # print("training finihsed in {} iterations".format(_))
-            # print(0/0)
             break
 
         centroids = new_centroids
@@ -296,8 +290,10 @@ def build_vocabulary(image_arrays, vocab_size, stride = 20):
 
         features = get_siftnet_features(img_tensor, x.flatten(), y.flatten())
         feature_vectors = np.append(feature_vectors, features, axis = 0)
-
-    vocab = kmeans(feature_vectors, vocab_size)
+    
+    # for jupyter notebook
+    # print("SIFT features extracted")
+    vocab = kmeans(feature_vectors, vocab_size, max_iter = 10)
 
     ###########################################################################
     #                             END OF YOUR CODE                            #
